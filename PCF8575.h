@@ -130,6 +130,7 @@ public:
 
 	void begin();
 	void pinMode(uint8_t pin, uint8_t mode);
+	void pinModePort16bit(uint16_t pins, uint8_t mode)
 
 	void readBuffer(bool force = true);
 	uint8_t digitalRead(uint8_t pin);
@@ -178,7 +179,7 @@ public:
 		uint16_t digitalReadAll(void);
 	#endif
 	void digitalWrite(uint8_t pin, uint8_t value);
-
+	void digitalPort16bitWrite(uint16_t pins, uint8_t value)
 private:
 	uint8_t _address;
 

@@ -41,8 +41,14 @@ You must set input/output mode:
 	pcf8575.pinMode(P0, OUTPUT);
 	pcf8575.pinMode(P1, INPUT);
 	pcf8575.pinMode(P2, INPUT);
+    
 ```
-
+or:
+```cpp
+	//0b00000011 == 3 == P0 and P1
+    uint16_t port = bit(P0) | bit(P1) | bit(P8);
+    PCF8575.pinModePort16bit(port, OUTPUT);
+```
 then IC as you can see in the image have 8 digital input/output:
 
 ![PCF8575 schema](https://github.com/xreef/PCF8575_library/blob/master/resources/PCF8575-pins.gif)
@@ -100,6 +106,15 @@ If you want write a digital value you must do:
 or:
 ```cpp
 	PCF8575.digitalWrite(P1, LOW);
+```
+If you want to write the value of multiple pins as a 16bit port:
+```cpp
+    uint16_t port = bit(P0) | bit(P1) | bit(P8);
+    PCF8575.digitalPort16bitWrite(port, HIGH);
+```
+or:
+```cpp
+	PCF8575.digitalPort16bitWrite(port, LOW);
 ```
 
 You can also use interrupt pin:

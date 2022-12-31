@@ -199,6 +199,21 @@ void PCF8575::begin(){
 }
 
 /**
+ * Set if fins is OUTPUT or INPUT
+ * @param pins: pins to set (for examples: 0b00000011 or 3)
+ * @param mode: mode, INPUT or OUTPUT all pins
+ */
+void PCF8575::pinModePort16bit(uint16_t pins, uint8_t mode){
+    if (mode == OUTPUT){
+        writeMode = writeMode | pins;
+        readMode =  readMode & ~pins;
+    }else if (mode == INPUT){
+        writeMode = writeMode & ~pins;
+        readMode =   readMode | pins;
+    }
+}
+
+/**
  * Set if fin is OUTPUT or INPUT
  * @param pin: pin to set
  * @param mode: mode, supported only INPUT or OUTPUT (to semplify)
@@ -471,4 +486,21 @@ void PCF8575::digitalWrite(uint8_t pin, uint8_t value){
 	_wire->endTransmission();
 };
 
+/**
+ * Write on all pins (PORT0 and PORT1)
+ * @param pins (for examples: 0b00000011 or 3)
+ * @param value (HIGH or LOW)
+ */
+void PCF8575::digitalPort16bitWrite(uint16_t pins, uint8_t value){
+    _wire->beginTransmission(_address);
+    if (value==HIGH){
+        writeByteBuffered = writeByteBuffered | pins;
+    }else{
+        writeByteBuffered = writeByteBuffered & ~pins;
+    }
 
+    writeByteBuffered = writeByteBuffered & writeMode;
+    _wire->write((uint8_t) writeByteBuffered);
+    _wire->write((uint8_t) (writeByteBuffered >> 8));
+    _wire->endTransmission();
+};
